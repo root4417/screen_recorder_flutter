@@ -1,7 +1,7 @@
 # screen_recorder_flutter
 
 
-A new Flutter plugin for screen recording. This plug-in requires Android SDK 19+ and iOS 10+
+A new Flutter plugin for screen recording. This plug-in requires Android SDK 21+ and iOS 12+
 
 
 ## Getting Started

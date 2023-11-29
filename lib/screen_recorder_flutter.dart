@@ -11,8 +11,7 @@ class ScreenRecorderFlutter {
       const MethodChannel('screen_recorder_flutter');
 
   static init(
-      {@required OnRecordingStarted onRecordingStarted,
-      @required OnRecodingCompleted onRecodingCompleted}) async {
+      {required OnRecordingStarted onRecordingStarted, required OnRecodingCompleted onRecodingCompleted}) async {
     final bool ready = await _channel.invokeMethod('init');
     print("Recorder ready $ready");
     _channel.setMethodCallHandler((call) async {

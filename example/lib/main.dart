@@ -26,7 +26,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String _platformVersion = 'Unknown';
-  File file;
+  late File file;
 
   @override
   void initState() {
@@ -77,28 +77,78 @@ class _HomeState extends State<Home> {
             children: [
               Text('Recording Status: $_platformVersion\n'),
               TextButton(
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.resolveWith<Color?>(
+                          (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return Colors.white;
+                        }
+                        return null; // defer to the defaults
+                      },
+                    ),
+                    backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                          (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return Colors.green;
+                        }
+                        return null; // defer to the defaults
+                      },
+                    ),
+                  ),
                   onPressed: () {
                     ScreenRecorderFlutter.startScreenRecord;
                   },
-                  color: Colors.green,
                   child: Center(child: Text("Start Recording"))),
               TextButton(
                   onPressed: () {
                     ScreenRecorderFlutter.stopScreenRecord;
                   },
-                  color: Colors.red,
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.resolveWith<Color?>(
+                          (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return Colors.white;
+                        }
+                        return null; // defer to the defaults
+                      },
+                    ),
+                    backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                          (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return Colors.red;
+                        }
+                        return null; // defer to the defaults
+                      },
+                    ),
+                  ),
                   child: Center(child: Text("Stop Recording"))),
-              if (null != file)
-                TextButton(
-                    onPressed: () {
-                      final route = MaterialPageRoute(
-                          builder: (b) => PlayRecording(
-                                file: file,
-                              ));
-                      Navigator.push(context, route);
-                    },
-                    color: Colors.brown,
-                    child: Center(child: Text("Preview Recording"))),
+              TextButton(
+                  onPressed: () {
+                    final route = MaterialPageRoute(
+                        builder: (b) => PlayRecording(
+                              file: file,
+                            ));
+                    Navigator.push(context, route);
+                  },
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.resolveWith<Color?>(
+                          (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return Colors.white;
+                        }
+                        return null; // defer to the defaults
+                      },
+                    ),
+                    backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                          (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return Colors.brown;
+                        }
+                        return null; // defer to the defaults
+                      },
+                    ),
+                  ),
+                  child: Center(child: Text("Preview Recording"))),
             ],
           ),
         ),
@@ -110,14 +160,14 @@ class _HomeState extends State<Home> {
 class PlayRecording extends StatefulWidget {
   final File file;
 
-  const PlayRecording({Key key, this.file}) : super(key: key);
+  const PlayRecording({Key? key, required this.file}) : super(key: key);
   @override
   _PlayRecordingState createState() => _PlayRecordingState();
 }
 
 class _PlayRecordingState extends State<PlayRecording> {
   bool _isPlaying = false;
-  VideoPlayerController controller;
+  VideoPlayerController? controller;
 
   @override
   void initState() {
@@ -147,8 +197,8 @@ class _PlayRecordingState extends State<PlayRecording> {
                     ),
                   )
                 : AspectRatio(
-                    aspectRatio: controller.value.aspectRatio,
-                    child: VideoPlayer(controller),
+                    aspectRatio: controller!.value.aspectRatio,
+                    child: VideoPlayer(controller!),
                   ),
           ),
           TextButton(
@@ -164,11 +214,11 @@ class _PlayRecordingState extends State<PlayRecording> {
                     color: Colors.white,
                   ),
             onPressed: () async {
-              bool isPlaying = controller.value.isPlaying;
+              bool isPlaying = controller!.value.isPlaying;
               if (isPlaying)
-                controller.pause();
+                controller!.pause();
               else
-                controller.play();
+                controller!.play();
               _isPlaying = isPlaying;
               setState(() {});
             },
